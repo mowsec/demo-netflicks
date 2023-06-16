@@ -1,0 +1,10 @@
+image: gitpod/workspace-dotnet
+
+tasks: 
+  - name: Build and Run Netflicks
+    init: dotnet build "DotNetFlicks.Web/Web.csproj"
+    command: dotnet run --project "DotNetFlicks.Web/Web.csproj"
+
+vscode:
+  extensions:
+    - muhammad-sammy.csharp
