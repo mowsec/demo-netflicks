@@ -13,7 +13,7 @@ tasks:
       dotnet build "DotNetFlicks.Web/Web.csproj"
       gp sync-await docker-build
     command: |
-      gp ports await 1443
+      gp ports await 1433
       dotnet run --project "DotNetFlicks.Web/Web.csproj"
 
 ports: 
@@ -21,7 +21,7 @@ ports:
     port: 5000
     onOpen: open-preview
   - name: MsSQL Database
-    port: 1443
+    port: 1433
     onOpen: ignore
 
 vscode:
