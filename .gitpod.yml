@@ -2,7 +2,10 @@ image: gitpod/workspace-dotnet
 
 tasks: 
   - name: Build and Run Netflicks
-    init: dotnet build "DotNetFlicks.Web/Web.csproj"
+    init: |
+      curl -fsSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 6.0.100 --install-dir /home/gitpod/dotnet
+      dotnet build "DotNetFlicks.Web/Web.csproj"
+      export ConnectionStrings:DotNetFlicksConnection="Server=tcp:localhost,1433; Initial Catalog=DotNetFlicksDb;Persist Security Info=False;User ID=sa;Password=reallyStrongPwd123;MultipleActiveResultSets=False"
     command: dotnet run --project "DotNetFlicks.Web/Web.csproj"
 
 vscode:
