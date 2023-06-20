@@ -1,22 +1,18 @@
 image: gitpod/workspace-dotnet
 
 tasks: 
-  - name: Restore & Build
+  - name: Start Database
     init: |
       docker compose build
       curl -fsSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 6.0.100 --install-dir /home/gitpod/dotnet
-      dotnet restore
-      dotnet build "DotNetFlicks.Web/Web.csproj"
       gp sync-done docker-build
-
-  - name: Start Database
     command: |
       docker compose up database
 
   - name: Run Netflicks
     init: |
-      # dotnet build "DotNetFlicks.Web/Web.csproj"
-      gp sync-await docker-build
+      dotnet restore
+      dotnet build "DotNetFlicks.Web/Web.csproj"
     command: |
       gp sync-await docker-build
       gp ports await 1433
@@ -32,4 +28,5 @@ ports:
 
 vscode:
   extensions:
+    - amvanbaren.runme
     - muhammad-sammy.csharp
