@@ -1,8 +1,9 @@
-image: gitpod/workspace-dotnet-lts
+image:
+  file: .gitpod.Dockerfile
 
 tasks: 
   - name: Start Database
-    before: curl -fsSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 6.0.100 --install-dir /home/gitpod/dotnet
+    # before: curl -fsSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 6.0.100 --install-dir /home/gitpod/dotnet
     init: |
       docker compose pull database
       docker compose build
@@ -11,7 +12,7 @@ tasks:
       docker compose up database
 
   - name: Run Netflicks
-    before: curl -fsSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 6.0.100 --install-dir /home/gitpod/dotnet
+    # before: curl -fsSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 6.0.100 --install-dir /home/gitpod/dotnet
     init: |
       dotnet restore
       dotnet build "DotNetFlicks.Web/Web.csproj"
