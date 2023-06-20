@@ -117,7 +117,6 @@ server:
   environment: development
 ```
 
-
 ### Add Environment Variables for application specific configuration
 
 Now we'll add our agent authentication keys and some other configuration values by setting environment variables.
@@ -133,10 +132,10 @@ However, GitPod provies a way to securely set these environment variables using 
 Set the following environment variables, adding your contrast API keys, to complete the configuration of the Contrast Agent:
 
 ```bash { closeTerminalOnSuccess=false interactive=false }
-CORECLR_ENABLE_PROFILING: 1
-CORECLR_PROFILER: {8B2CE134-0948-48CA-A4B2-80DDAD9F5791}
-CORECLR_PROFILER_PATH: <application directory>/contrast/runtimes/linux-x64/native/ContrastProfiler.so
-CONTRAST_CONFIG_PATH: [Path to yaml config file]
+export CORECLR_ENABLE_PROFILING=1
+export CORECLR_PROFILER={8B2CE134-0948-48CA-A4B2-80DDAD9F5791}
+export CORECLR_PROFILER_PATH=./contrast/runtimes/linux-x64/native/ContrastProfiler.so
+export CONTRAST_CONFIG_PATH=./contrast_security.yaml
 ```
 
 ## Starting the app with Contrast
