@@ -12,9 +12,10 @@ tasks:
 
   - name: Run Netflicks
     # before: curl -fsSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 6.0.100 --install-dir /home/gitpod/dotnet
-    init: |
+    before: |
       curl -fsSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 6.0 --install-dir /home/gitpod/dotnet
       export PATH=/home/gitpod/dotnet:$PATH 
+    init: |
       dotnet restore
       dotnet build "DotNetFlicks.Web/Web.csproj"
     command: |
