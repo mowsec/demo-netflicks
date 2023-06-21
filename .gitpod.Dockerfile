@@ -3,8 +3,7 @@ FROM gitpod/workspace-full
 USER gitpod
 
 # Downgrade the Java version so that it's compatible with PetClinic
-RUN bash -c ". /home/gitpod/.sdkman/bin/sdkman-init.sh && \
-    sdk install java 8.0.362-zulu && \
-    sdk default java 8.0.362-zulu"
+RUN bash -c "curl -fsSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 6.0 --install-dir /home/gitpod/dotnet"
+RUN bash -c "export PATH=/home/gitpod/dotnet:$PATH" 
 
 RUN npx playwright install-deps
