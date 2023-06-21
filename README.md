@@ -130,7 +130,7 @@ Now that we've configured the agent, we need to configure the .NET environment t
 ```bash { closeTerminalOnSuccess=false interactive=false }
 export CORECLR_ENABLE_PROFILING=1
 export CORECLR_PROFILER={8B2CE134-0948-48CA-A4B2-80DDAD9F5791}
-export CORECLR_PROFILER_PATH=./contrast/runtimes/linux-x64/native/ContrastProfiler.so
+export CORECLR_PROFILER_PATH=/workspace/demo-netflicks/DotNetFlicks.Web/bin/Debug/net6.0/contrast/runtimes/linux-x64/native/ContrastProfiler.so
 export CONTRAST_CONFIG_PATH=./contrast_security.yaml
 ```
 
