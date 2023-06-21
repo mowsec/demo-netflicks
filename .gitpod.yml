@@ -1,5 +1,5 @@
-# image:
-#   file: .gitpod.Dockerfile
+image:
+  file: .gitpod.Dockerfile
 
 tasks: 
   - name: Start Database
@@ -19,6 +19,8 @@ tasks:
     init: |
       dotnet restore
       dotnet build "DotNetFlicks.Web/Web.csproj"
+      npm install -D @playwright/test
+      npx playwright install
     command: |
       export PATH=/home/gitpod/dotnet:$PATH 
       open README.md

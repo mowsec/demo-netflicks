@@ -14,49 +14,38 @@ Contrast Security is the leader in modernized application security, embedding co
 
 ### About Netflicks
 
-TODO
+This is a .NET 6.0 demo application, based on https://github.com/LeviHassel/.net-flicks with added vulnerabilities.
 
 ## Prerequisites
 
-1. **A Contrast Security Account**: You'll need a Contrast Security account to manage your applications and view vulnerability reports and attack events.
+#### A Contrast Security Account
 
-   * If you are an existing customer or have a POV evaluation with Contrast, please log in to your existing account.
-   * If you are attending a workshop, a signup link will be provided.
-   * If you don't yet have an account, you can sign up for our [Community Edition](https://www.contrastsecurity.com/contrast-community-edition) for limited access for one application (supports Java and .NET). [Or get in touch for a demo and free evaluation licence.](https://www.contrastsecurity.com/request-demo)
+You'll need a Contrast Security account to manage your applications and view vulnerability reports and attack events. If you are an existing customer or have a POV evaluation with Contrast, please log in to your existing account. If you are attending a workshop, a sign up link will be provided.
 
-2. **A GitPod Account**: You'll need to sign up to [GitPod.io](gitpod.io) with a GitHub, GitLab or BitBucket account to run the workshop in GitPod. Signup is free.
+You can sign also sign up for our [Community Edition](https://www.contrastsecurity.com/contrast-community-edition) for limited access for one application (supports Java and .NET). [Or get in touch for a demo and free evaluation license.](https://www.contrastsecurity.com/request-demo)
+
+#### Your Contrast Security Agent Keys
+
+Once you've logged in or signed up to the Contrast Security platform, retrieve your agent keys by downloading the YAML configuration file.
+
+Click on the **Add New** button on the top right of the platform and select **Live Application**. Select your preferred language from the dropdown and click the **Download the contrast_security.yaml** link. This will download a YAML file containing your agent keys that you will use later in this workshop.
+
+![Download agent keys](./workshop/download-agent-keys.png)
+
+You can also view your agent keys by clicking on your Profile icon at the top right, selecting **Organization Settings** and then **Agent**.
+
+![View agent keys](./workshop/view-agent-keys.png)
+
+#### A GitPod Account
+
+If you don't already have a GitPod account, you'll need to sign up at [GitPod.io](gitpod.io) with your GitHub account. Signup is free, and it only takes a few minutes. The rest of this workshop will be run in GitPod, which is a cloud-based IDE that runs in your browser.
+
 
 ## Launch the workshop in GitPod (Recommended)
 
 Click the button below to start the workshop in GitPod, which is preconfigured with everything you need. GitPod will launch VS Code in the browser that you can use to change source code and configuration, run commands in a terminal and view the running application in a preview window.
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/mowsec/demo-netflicks)
-
-## Launch the workshop locally
-
-You can also run this workshop locally if you prefer. Clone the repo and perform the usual steps to install dependencies and run the app, before continuing with the rest of the workshop guide below.
-
-<details>
-
-<summary>Installing the workshop locally</summary>
-
-(**WARNING:** The computer running this application will be vulnerable to attacks, please take appropriate precautions.)
-
-TODO
-
-<summary>Running the workshop locally in docker compose</summary>
-
-Running the workshop in Docker will isolate it from your environment. The Docker images contain all the dependancies required for the workshop. Run the commands below to build the containers and run the app.
-
-1. **Build and run the application and database in docker compose**
-
-```bash
-docker compose up --build
-```
-
-2. **Browse to the application at `localhost:5000`**
-
-</details>
 
 ---
 
@@ -72,13 +61,20 @@ Once GitPod has loaded your workspace, you'll notice two services are running in
 Take some time to familiarise yourself with the VS Code editor, the terminal and the running application. Browse around the app and log in using some of the following credentials:
 
 * Username:Password
-* TODO
+* `admin@dotnetflicks.com`:`p@ssWORD471`
 
 You can stop these services at any time by entering `Ctrl + C` in the terminal.
 
 ## Installing the Contrast Security Agent
 
 To get started with Contrast, you'll need to download and install the agent packages from the package manager. Use NPM to download the agent for Node applications:
+
+Change directory into the `DotNetFlicks.Web` directory:
+```bash
+cd DotNetFlicks.Web
+```
+
+And run the following command to add the Contrast Agent Package:
 
 ```bash { closeTerminalOnSuccess=false interactive=false }
 dotnet add package Contrast.SensorsNetCore
@@ -88,21 +84,31 @@ dotnet add package Contrast.SensorsNetCore
 
 Next, we need to configure the Contrast Agent with authentication keys, general configuration (such as logging and proxy configuration), and application specific configuration (such as setting an name, environment and agent mode).
 
-All configuration options can be set in a YAML configuration file and via Environment Variables, and the agent uses this [order of precedence](https://docs.contrastsecurity.com/en/order-of-precedence.html). We recommend setting configuration as follows:
+All configuration options can be set in a YAML configuration file and via Environment Variables, and the agent follows this [order of precedence](https://docs.contrastsecurity.com/en/order-of-precedence.html):  We typically recommend setting configuration as follows:
 
 1. **Environment Variables** for authentication keys and application specific values, or to overwrite a base configuration set in the YAML file.
-2. **YAML configuration file** for general configuration
+2. **YAML configuration file** for general configuration options that are common across all applications.
+
+For this workshop, we'll set all of our configuration in the YAML file for simplicity.
 
 For more information on configuring the agent, please see:
 
 * [Configure the Node.js agent](https://docs.contrastsecurity.com/en/node-js-configuration.html)
-* [Contrast agent configuration editor](https://agent.config.contrastsecurity.com:443/#mode=share&language=nodejs&content=784%40IyBBZ2VudCBhdXRoZW50aWNhdGlvbiBjb25maWd1cmF0aW9uCiMgU2V0IHRoaXMgaW4gdGhlIHlhbWwgaGVyZSwgb3IgdXNlIGVudmlyb25tZW50IHZhcmlhYmxlcyBpbnN0ZWFkLgphcGk6CiAgdXJsOiBodHRwczovL2FwcC5jb250cmFzdHNlY3VyaXR5LmNvbS9Db250cmFzdC8KICBhcGlfa2V5OiBUT0RPCiAgc2VydmljZV9rZXk6IFRPRE8KICB1c2VyX25hbWU6IFRPRE8KCiMgQXBwbGljYXRpb24gY29uZmlndXJhdGlvbiBvcHRpb25zIAojIFRlbGxzIENvbnRyYXN0IGhvdyB0byBkaXNwbGF5IHlvdXIgYXBwbGljYXRpb24gaW4gdGhlIHBsYXRmb3JtLgphcHBsaWNhdGlvbjoKICBuYW1lOiBUT0RPCiAgdmVyc2lvbjogVE9ETwogIHRhZ3M6IFRPRE8KCiMgU2VydmVyIGNvbmZpZ3VyYXRpb24gb3B0aW9ucwojIFRlbGxzIGNvbnRyYXN0IGFib3V0IHRoZSBzZXJ2ZXIgYW5kIGVudmlyb25tZW50LiAKIyBVc2UgdGhpcyB0byBjaGFuZ2UgYmV0d2VlZW4gQXNzZXNzIGFuZCBQcm90ZWN0LgpzZXJ2ZXI6CiAgbmFtZTogbG9jYWxob3N0CiAgZW52aXJvbm1lbnQ6IGRldmVsb3BtZW50CgojIEFnZW50IGNvbmZpZ3VyYXRpb24gb3B0aW9ucwojIFNldCB1cCBhZ2VudCBsb2dnaW5nIAphZ2VudDoKICBsb2dnZXI6CiAgICBwYXRoOiAuL2NvbnRyYXN0X2FnZW50LmxvZwogICAgbGV2ZWw6IElORk8KICAgIHN0ZG91dDogZmFsc2UKICAgIHN0ZGVycjogZmFsc2UKICBzZWN1cml0eV9sb2dnZXI6CiAgICBwYXRoOiAvLmNvbnRyYXN0L3NlY3VyaXR5LmxvZwogICAgbGV2ZWw6IEVSUk9SCg)
+* [Contrast agent configuration editor](https://agent.config.contrastsecurity.com:443/#mode=share&language=java&content=784%40IyBBZ2VudCBhdXRoZW50aWNhdGlvbiBjb25maWd1cmF0aW9uCiMgU2V0IHRoaXMgaW4gdGhlIHlhbWwgaGVyZSwgb3IgdXNlIGVudmlyb25tZW50IHZhcmlhYmxlcyBpbnN0ZWFkLgphcGk6CiAgdXJsOiBodHRwczovL2FwcC5jb250cmFzdHNlY3VyaXR5LmNvbS9Db250cmFzdC8KICBhcGlfa2V5OiBUT0RPCiAgc2VydmljZV9rZXk6IFRPRE8KICB1c2VyX25hbWU6IFRPRE8KCiMgQXBwbGljYXRpb24gY29uZmlndXJhdGlvbiBvcHRpb25zIAojIFRlbGxzIENvbnRyYXN0IGhvdyB0byBkaXNwbGF5IHlvdXIgYXBwbGljYXRpb24gaW4gdGhlIHBsYXRmb3JtLgphcHBsaWNhdGlvbjoKICBuYW1lOiBUT0RPCiAgdmVyc2lvbjogVE9ETwogIHRhZ3M6IFRPRE8KCiMgU2VydmVyIGNvbmZpZ3VyYXRpb24gb3B0aW9ucwojIFRlbGxzIGNvbnRyYXN0IGFib3V0IHRoZSBzZXJ2ZXIgYW5kIGVudmlyb25tZW50LiAKIyBVc2UgdGhpcyB0byBjaGFuZ2UgYmV0d2VlZW4gQXNzZXNzIGFuZCBQcm90ZWN0LgpzZXJ2ZXI6CiAgbmFtZTogbG9jYWxob3N0CiAgZW52aXJvbm1lbnQ6IGRldmVsb3BtZW50CgojIEFnZW50IGNvbmZpZ3VyYXRpb24gb3B0aW9ucwojIFNldCB1cCBhZ2VudCBsb2dnaW5nIAphZ2VudDoKICBsb2dnZXI6CiAgICBwYXRoOiAuL2NvbnRyYXN0X2FnZW50LmxvZwogICAgbGV2ZWw6IElORk8KICAgIHN0ZG91dDogZmFsc2UKICAgIHN0ZGVycjogZmFsc2UKICBzZWN1cml0eV9sb2dnZXI6CiAgICBwYXRoOiAvLmNvbnRyYXN0L3NlY3VyaXR5LmxvZwogICAgbGV2ZWw6IEVSUk9SCg)
 
 ### Add a `contrast_security.yaml` file
 
-Add a YAML configuration file for your general agent configuration. This file can either be placed in the applications root directory (`./`) or in the default location for the agent (`/etc/contrast/contrast_security.yaml`).
+Add a YAML configuration file for your general agent configuration. This file can either be placed in the application's root directory (`./`) or in the default location for the agent (`/etc/contrast/contrast_security.yaml`).
 
-Add the following basic configration for your app:
+Either create a new `contrast_security.yaml` file, or copy in the file you downloaded from the Contrast Platform at the start of the workshop.
+
+Add configuration for the following:
+
+* Your Agent authentication and API Keys
+* A unique name for your application and server (e.g. `Netflicks-Workshop-Taylor`)
+* Any other configuration you want to set, including agent logging
+
+Your `contrast_security.yaml` file should look something like this:
 
 ```yaml
 api:
@@ -119,17 +125,7 @@ server:
 
 ### Add Environment Variables for application specific configuration
 
-Now we'll add our agent authentication keys and some other configuration values by setting environment variables.
-
-Typically, you would export environment variables by running the following command:
-
-```bash
-export CONTRAST__API__URL=XXXXXXXXXXXXXXXXXXX
-```
-
-However, GitPod provies a way to securely set these environment variables using the `gp env` command. This will save your Contrast environment variables in your GitPod account for this workspace.
-
-Set the following environment variables, adding your contrast API keys, to complete the configuration of the Contrast Agent:
+Now that we've configured the agent, we need to configure the .NET environment to run applications with the Contrast profiler enabled. You can typically do this by setting environment variables as follows, however depending on how you run NetFlicks will depend where this configuration should go:
 
 ```bash { closeTerminalOnSuccess=false interactive=false }
 export CORECLR_ENABLE_PROFILING=1
@@ -137,6 +133,10 @@ export CORECLR_PROFILER={8B2CE134-0948-48CA-A4B2-80DDAD9F5791}
 export CORECLR_PROFILER_PATH=./contrast/runtimes/linux-x64/native/ContrastProfiler.so
 export CONTRAST_CONFIG_PATH=./contrast_security.yaml
 ```
+
+Please see [Install the .NET Core agent manually with NuGet
+](https://docs.contrastsecurity.com/en/-net-core-with-nuget.html) for more info on installing and configuring the agent. 
+
 
 ## Starting the app with Contrast
 
@@ -150,6 +150,13 @@ First stop the application using `Ctrl+C` if it is still running.
 dotnet run --project "DotNetFlicks.Web/Web.csproj"
 ```
 
+Or build and run the compiled app: 
+
+```bash
+dotnet publish "DotNetFlicks.Web/Web.csproj" -c Release -o release
+dotnet release/DotNetFlicks.Web.dll
+```
+
 Browse the running application via the Simple Browser tab.
 
 You can confirm that the application is running with the contrast agent by checking in the Contrast Security Platform to ensure your new application has been registered. Also, some Contrast output will be visible in the logs for the application if it started successfully.
@@ -160,17 +167,18 @@ Interactive Application Security Testing (IAST) works by observing application b
 
 ### Test the application manually
 
-Try logging in to the application using the supplied credentials, create a new account for yourself via the register page and then login and back out. View some of the other pages and functionality in the app.
+Try logging in to the application using the supplied credentials, logging out again, creating a new user for yourself and browsing some of the other pages and functionality in the app.
 
-When you're done exploring the application, look at the Contrast Platform for your applciation to see if any vulnerabilities were detected.
+When you're done exploring the application, look at the Contrast Platform to see if any vulnerabilities were detected. You'll also see any vulnerable libraries that were detected, as well as the route coverage that you've achieved with your manual testing.
+
+![Application Details](./workshop/application-details.png)
 
 ### Test the application with automated tests
 
-This container includes cypress to run automated tests. These can be run using:
+This container includes playwright to run automated tests. With the application still running, open a new terminal and run the following to run these tests:
 
 ```bash
-npm install playwright
-npm run playwright
+npx playwright test
 ```
 
 Once the tests have completed, check back in the Contrast Platform to see if any additional vulnerabilities were detected.
@@ -188,9 +196,9 @@ To see how this works, we need to change some agent configuration to tell it to 
 
 ```yaml
 application:
-    name: Netflicks-Workshop-<initials>
+    name: PetClinic-Workshop-<initials>
 server:
-    name: Netflicks-Workshop-<initials>-Prod
+    name: PetClinic-Workshop-<initials>-Prod
     environment: production
 ```
 
@@ -201,8 +209,6 @@ server:
 
 Attempt to exploit your application to see how the Contrast Agent detects and reports this.
 
-There is a tutorial available from the home page of WebGoat which will guide you through some attakcs.
-
 ### Configuring Protect to Block attacks
 
 By default, Contrast Protect runs in Monitor mode to begin with. This will identify attacks and notify you without interfering with the application.
@@ -212,7 +218,3 @@ You can change the Policy for the application to run in Block mode on the Applic
 In Blocking mode, the agent will raise an exception within the application (500) if a successful attack is detected. THis prevents the attacker from performing any adverse actions against the application.
 
 Enable Blocking mode now and try the attacks again to see how the agent responds.
-
-## Contrast Reporting
-
-Contrast can export vulnerability information and reports in a number of ways.
