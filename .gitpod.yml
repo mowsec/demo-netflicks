@@ -25,8 +25,8 @@ tasks:
     command: |
       export PATH=/home/gitpod/dotnet:$PATH 
       gp ports await 1433
-      dotnet run --project "DotNetFlicks.Web/Web.csproj"
       open README.md
+      dotnet run --project "DotNetFlicks.Web/Web.csproj"
 
 ports: 
   - name: Netflicks
