@@ -15,6 +15,7 @@ tasks:
       curl -fsSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 6.0 --install-dir /home/gitpod/dotnet
       export PATH=/home/gitpod/dotnet:$PATH 
       echo "export PATH=/home/gitpod/dotnet:$PATH" >> $HOME/.bashrc
+      sudo ln -s /home/gitpod/dotnet/dotnet /usr/local/bin/dotnet 
     init: |
       export PATH=/home/gitpod/dotnet:$PATH
       dotnet restore
@@ -23,9 +24,9 @@ tasks:
       npx playwright install
     command: |
       export PATH=/home/gitpod/dotnet:$PATH 
-      open README.md
       gp ports await 1433
       dotnet run --project "DotNetFlicks.Web/Web.csproj"
+      open README.md
 
 ports: 
   - name: Netflicks
