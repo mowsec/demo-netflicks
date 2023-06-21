@@ -2,10 +2,8 @@
   "name": "demo-netflicks",
   "version": "1.0.0",
   "description": "This is a .NET Core 6.0 demo application, based on https://github.com/LeviHassel/.net-flicks with added vulnerabilities.",
-  "dependencies": {
-  },
   "devDependencies": {
-    "@playwright/test": "^1.23.0"
+    "@playwright/test": "^1.35.1"
   },
   "scripts": {
     "e2e": "npx playwright test"

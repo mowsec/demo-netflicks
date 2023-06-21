@@ -11,12 +11,12 @@ tasks:
       docker compose up database
 
   - name: Run Netflicks
-    # before: curl -fsSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 6.0.100 --install-dir /home/gitpod/dotnet
     before: |
       curl -fsSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 6.0 --install-dir /home/gitpod/dotnet
       export PATH=/home/gitpod/dotnet:$PATH 
       echo "export PATH=/home/gitpod/dotnet:$PATH" >> $HOME/.bashrc
     init: |
+      export PATH=/home/gitpod/dotnet:$PATH
       dotnet restore
       dotnet build "DotNetFlicks.Web/Web.csproj"
       npm install -D @playwright/test
