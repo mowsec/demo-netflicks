@@ -30,13 +30,13 @@ jobs:
           load: true
           tags: netflicks:docker-test
       -
-        name: Run docker-compose tests
-        run: | 
-          docker-compose up
+        # name: Run docker-compose tests
+        # run: | 
+        #   docker-compose up
 
-        # name: Run Docker images
-        # run: |
-        #   docker run --rm -d -p 1433:1433 --name database -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=reallyStrongPwd123' mcr.microsoft.com/azure-sql-edge
-        #   docker run --rm -p 8080:8080 -e 'ConnectionStrings__DotNetFlicksConnection=Server=tcp:0.0.0.0,1433;Initial Catalog=DotNetFlicksDb;Persist Security Info=False;User ID=sa;Password=reallyStrongPwd123;MultipleActiveResultSets=False;' netflicks:docker-test
+        name: Run Docker images
+        run: |
+          docker run --rm -d -p 1433:1433 --name database -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=reallyStrongPwd123' mcr.microsoft.com/azure-sql-edge
+          docker run --rm -p 8080:8080 -e 'ConnectionStrings__DotNetFlicksConnection=Server=tcp:0.0.0.0,1433;Initial Catalog=DotNetFlicksDb;Persist Security Info=False;User ID=sa;Password=reallyStrongPwd123;MultipleActiveResultSets=False;' netflicks:docker-test
       
             
