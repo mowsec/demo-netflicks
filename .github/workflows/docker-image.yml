@@ -47,7 +47,7 @@ jobs:
       -
         name: Run docker-compose tests
         run: | 
-          docker-compose -f docker-compose.yml up
+          docker-compose -f docker-compose.yml up -d 
       - 
         name: Setup Node
         uses: actions/setup-node@v3
