@@ -35,6 +35,9 @@ jobs:
         run: |
           echo Testing now
       -
+        name: Checkout branch
+        uses: actions/checkout@v4
+      -
         name: Build and push Docker images
         uses: docker/build-push-action@v5.1.0
         with: 
