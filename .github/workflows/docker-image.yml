@@ -54,13 +54,13 @@ jobs:
       - 
         name: Install dependencies
         run: | 
-          cd e2e && npm ci
+          npm install
       - 
         name: Install playwright browsers
         run: npx playwright install-deps chromium
       - 
         name: Run tests
-        run: npx playwright test
+        run: cd e2e && npx playwright test
 
             
 

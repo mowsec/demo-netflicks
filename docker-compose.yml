@@ -2,7 +2,7 @@ version: '3'
 
 services:
   database:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/azure-sql-edge
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=reallyStrongPwd123
@@ -10,7 +10,7 @@ services:
       - '1433:1433'
       
   web:
-    image: netflicks:1.0
+    image: netflicks:docker-test
     build: .
     depends_on:
       - database
