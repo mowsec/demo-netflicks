@@ -61,7 +61,7 @@ jobs:
         run: npx playwright install-deps chromium
       - 
         name: Run tests
-        run: BASEURL=http://localhost:8080 npx playwright test
+        run: BASEURL=http://localhost:5000 npx playwright test
 
             
 
