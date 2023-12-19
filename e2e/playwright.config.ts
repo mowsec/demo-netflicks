@@ -12,7 +12,7 @@ require('dotenv').config();
  */
 const config: PlaywrightTestConfig = {
   globalSetup: require.resolve('./global-setup'),
-  testDir: './',
+  testDir: './e2e',
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
   expect: {
