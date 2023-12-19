@@ -5,14 +5,14 @@ import { devices } from '@playwright/test';
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// require('dotenv').config();
+require('dotenv').config();
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 const config: PlaywrightTestConfig = {
   globalSetup: require.resolve('./global-setup'),
-  testDir: './e2e',
+  testDir: './',
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
   expect: {
