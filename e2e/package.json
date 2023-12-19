@@ -1,0 +1,25 @@
+{
+  "name": "demo-netflicks",
+  "version": "1.0.0",
+  "description": "This is a .NET Core 6.0 demo application, based on https://github.com/LeviHassel/.net-flicks with added vulnerabilities.",
+  "devDependencies": {
+    "@playwright/test": "^1.35.1"
+  },
+  "scripts": {
+    "e2e": "npx playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://davidaustinarcher@github.com/Contrast-Security-OSS/demo-netflicks.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Contrast-Security-OSS/demo-netflicks/issues"
+  },
+  "homepage": "https://github.com/Contrast-Security-OSS/demo-netflicks#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
